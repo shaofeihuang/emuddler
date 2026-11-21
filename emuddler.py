@@ -4,7 +4,7 @@ import os
 import subprocess
 import tempfile
 
-KEY_NAME = "ecdsa-secp384r1-key"  # replaces "zard"
+KEY_NAME = "ecdsa-secp384r1-key"
 
 def read_len(b, pos):
     first = b[pos]
