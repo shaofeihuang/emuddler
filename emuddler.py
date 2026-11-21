@@ -3,6 +3,7 @@ import argparse
 import os
 import subprocess
 import tempfile
+import time
 
 KEY_NAME = "ecdsa-secp384r1-key"
 
@@ -104,6 +105,7 @@ def main():
         print()
 
     found = False
+    start_time = time.perf_counter()
     with tempfile.TemporaryDirectory() as tmp:
         path = os.path.join(tmp, "candidate.der")
         for i in range(0x100):
@@ -143,11 +145,15 @@ def main():
 
             if cand_norm == cert_pub_norm:
                 found = True
+                elapsed = time.perf_counter() - start_time
                 print(f"*** MATCH FOUND: last byte = {i:02x} (hex) / {i} (dec) ***")
+                print(f"elapsed time to match: {elapsed:.3f}s")
                 break
 
     if not found:
+        elapsed = time.perf_counter() - start_time
         print("No match found across 00..ff.")
+        print(f"elapsed time: {elapsed:.3f}s")
 
 if __name__ == "__main__":
     main()
