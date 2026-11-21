@@ -17,20 +17,6 @@ Authority (CA) private keys (six TLS and two code-signing) were
 compromised due to an April 2025 key-generation script error that
 produced trivially guessable keys.
 
-**What happened:**
-
-- **Weak P-384 keys.** A script flaw during an April 2025 key-generation
-  ceremony produced tiny private key values (such as single- and
-  two-digit integers) instead of properly random 384-bit keys, letting
-  attackers derive the keys and forge certificates.
-- **Revocation and distrust.** eMudhra revoked the eight intermediate
-  certificates on October 18, 2026, Sectigo revoked related
-  cross-certificates on October 19, and major browsers and OS vendors
-  (Chrome, Mozilla, Apple, Microsoft) moved to block or untrust them.
-- **Business impact.** eMudhra announced an exit from public TLS
-  certificate issuance while stating its eSignature and enterprise
-  products remained unaffected.
-
 See also: [emudhra.we-have-a-problem.com](https://emudhra.we-have-a-problem.com/)
 
 This tool was built to understand and reproduce the mechanics of that
