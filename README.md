@@ -68,7 +68,7 @@ constructed to resemble them.
 ## Installation
 
 ```bash
-git clone https://github.com/<you>/emuddler.git
+git clone https://github.com/shaofeihuang/emuddler.git
 cd emuddler
 ```
 
