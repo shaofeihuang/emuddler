@@ -68,38 +68,41 @@ constructed to resemble them.
 ## Installation
 
 ```bash
-git clone https://github.com/shaofeihuang/emuddler.git
+git clone https://github.com/<you>/emuddler.git
 cd emuddler
 ```
 
 No dependencies beyond the Python standard library. The main script is
-`emuddler.py` (rename `iterate.py` to this if you're carrying over the
-version from earlier in this conversation).
+`emuddler.py`.
 
 ## Usage
 
 ```
 usage: emuddler.py [-h] [--openssl OPENSSL] [--start START] [--end END]
-                    [--bootstrap] [--curve CURVE] [--outdir OUTDIR]
-                    [--cert cert.pem] [-q]
-                    [private_key.der]
-
-positional arguments:
-  private_key.der     input key in DER, e.g. ecdsa-secp384r1-key-nopub.der
+                      [--bootstrap] [--curve CURVE] [--outdir OUTDIR] [-q]
+                      [--der private_key.der] [--cert cert.pem]
 
 options:
-  -h, --help          show this help message and exit
-  --openssl OPENSSL   path to the openssl binary (default: openssl)
-  --start START       override scalar start offset in the DER file
-  --end END           override scalar end offset (exclusive)
-  --bootstrap         generate a fresh key pair and use it as the nopub
-                      input
-  --curve CURVE       curve for --bootstrap (default: secp384r1)
-  --outdir OUTDIR     directory for --bootstrap output (default: .)
-  --cert cert.pem     cert PEM to compare the recovered public key against
-  -q, --quiet         suppress per-iteration output; print only the final
-                      result
+  -h, --help            show this help message and exit
+  --openssl OPENSSL     path to the openssl binary (default: openssl)
+  --start START         override scalar start offset in the DER file
+  --end END             override scalar end offset (exclusive)
+  --bootstrap           generate a fresh key pair and use it as the nopub
+                        input
+  --curve CURVE         curve for --bootstrap (default: secp384r1)
+  --outdir OUTDIR       directory for --bootstrap output (default: .)
+  -q, --quiet           suppress per-iteration output; print only the final
+                        result
+  --der private_key.der
+                        input key in DER, e.g. ecdsa-secp384r1-key-nopub.der
+  --cert cert.pem       cert PEM to compare the recovered public key
+                        against
 ```
+
+`--der` is required unless `--bootstrap` is given (in which case the
+freshly generated `-nopub` key is used automatically). `--cert` is
+optional: without it, the script parses the DER, reports the scalar
+offsets, and exits without doing the brute-force search.
 
 ### 1. Generate a test key pair
 
@@ -126,7 +129,7 @@ bytes to treat as unknown).
 ### 2. Recover the private key against a known public key / certificate
 
 ```bash
-python3 emuddler.py ecdsa-secp384r1-key-nopub.der --cert EM-DV-TLS-CA-G3B.crt.pem
+python3 emuddler.py --der ecdsa-secp384r1-key-nopub.der --cert EM-DV-TLS-CA-G3B.crt.pem
 ```
 
 The script:
@@ -145,7 +148,7 @@ The script:
 ### 3. Quiet mode
 
 ```bash
-python3 emuddler.py ecdsa-secp384r1-key-nopub.der --cert EM-DV-TLS-CA-G3B.crt.pem -q
+python3 emuddler.py --der ecdsa-secp384r1-key-nopub.der --cert EM-DV-TLS-CA-G3B.crt.pem -q
 ```
 
 Suppresses all per-iteration output and prints only:
@@ -167,7 +170,7 @@ If the automatic DER parser ever gets the offsets wrong for a given file
 non-zero byte, you can force the search range manually:
 
 ```bash
-python3 emuddler.py private_key.der --cert cert.pem --start 7 --end 55
+python3 emuddler.py --der private_key.der --cert cert.pem --start 7 --end 55
 ```
 
 `--end` is exclusive; the byte at `--end - 1` is the one that gets
@@ -210,6 +213,7 @@ you believe you have found a *new*, undisclosed instance of this or a
 similar weak-key-generation issue, follow responsible disclosure and
 report it directly to the affected CA rather than via a public tool or
 repository.
+
 
 ## License
 
