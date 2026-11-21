@@ -65,16 +65,6 @@ constructed to resemble them.
     `/opt/homebrew/opt/openssl@3/bin/openssl` if you need to strip the
     public key from a freshly generated key.
 
-## Installation
-
-```bash
-git clone https://github.com/<you>/emuddler.git
-cd emuddler
-```
-
-No dependencies beyond the Python standard library. The main script is
-`emuddler.py`.
-
 ## Usage
 
 ```
