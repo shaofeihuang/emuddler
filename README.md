@@ -1,3 +1,6 @@
+![Digital risks](https://images.forbesindia.com/blog/wp-content/uploads/2026/10/Opening-DigitalRisks2BG-2026-10-c01c99da99b9090ddb31173c7506dd74.jpg)
+*Image credit: [Forbes India](https://www.forbesindia.com/article/business/tech/everything-happened-due-to-human-error-emudhra-co-founder-on-the-security-lapse/2999836/1)*
+
 # eMuddler
  
 A proof-of-concept tool for recovering EC private keys affected by the
