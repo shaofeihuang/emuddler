@@ -7,23 +7,23 @@ import time
 
 KEY_NAME = "ecdsa-secp384r1-key"
 
-def read_len(b, pos):
+def parse_der(b, pos):
     first = b[pos]
     if first < 0x80:
         return first, pos + 1
     n = first & 0x7F
     return int.from_bytes(b[pos + 1:pos + 1 + n], "big"), pos + 1 + n
 
-def find_scalar(b):
+def find_privkey(b):
     if b[0] != 0x30:
         raise ValueError("not a DER SEQUENCE")
-    _, pos = read_len(b, 1)
+    _, pos = parse_der(b, 1)
     if b[pos:pos + 3] != b"\x02\x01\x01":
         raise ValueError("missing version INTEGER 1")
     pos += 3
     if b[pos] != 0x04:
         raise ValueError("missing OCTET STRING for private key")
-    length, pos = read_len(b, pos + 1)
+    length, pos = parse_der(b, pos + 1)
     return pos, pos + length
 
 def normalize_pem(pem_text):
@@ -77,7 +77,7 @@ def main():
     with open(der_path, "rb") as f:
         orig = f.read()
 
-    start, end = find_scalar(orig)
+    start, end = find_privkey(orig)
     if args.start is not None:
         start = args.start
     if args.end is not None:
